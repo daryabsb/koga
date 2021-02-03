@@ -1,5 +1,10 @@
 from django.db import models
 
+import barcode
+from barcode.writer import ImageWriter
+from io import BytesIO
+from django.core.files import File
+
 import uuid
 import os
 
@@ -116,6 +121,7 @@ class Asset(models.Model):
     department = models.ForeignKey('Department', null=True, on_delete=models.SET_NULL)
     description = models.TextField(null=True,blank=True)
     condition = models.CharField(max_length=2,default='01',choices=CONDITION_CHOICES)
+    barcode = models.ImageField(null=True, blank=True, upload_to=profile_image_file_path)
     image = models.ImageField(null=True, blank=True, upload_to=image_file_path)
 
     def __unicode__(self):
@@ -123,3 +129,11 @@ class Asset(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        EAN = barcode.get_barcode_class('code39')
+        ean = EAN(f'{self.department.id}{self.condition}{self.id}', writer=ImageWriter())
+        buffer = BytesIO()
+        ean.write(buffer)
+        self.barcode.save(f'{uuid.uuid4()}.png', File(buffer), save=False)
+        return super().save(*args,**kwargs)
