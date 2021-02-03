@@ -1,0 +1,129 @@
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from django.db.models import Q
+
+from datetime import datetime, timedelta, date as dt
+# from .filters import datefilter, get_date_range as delta
+
+from rest_framework import generics, authentication, permissions
+
+
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework import status
+
+from rest_framework import authentication, permissions, parsers, viewsets, mixins, status, views
+
+# from rest_framework.authentication import TokenAuthentication
+# from rest_framework.permissions import IsAuthenticated
+
+from core.models import (
+    User, Employee, Department, AssetType, Asset,
+    )
+from .serializers import (
+    UserListSerializer, UserSerializer, AuthTokenSerializer, ChangePasswordSerializer,
+    UserPictureSerializer,
+    # AttachmentSerializer,
+    )
+# from .pagination import PatientPagination, AppointmentPagination
+
+class CreateUserView(generics.CreateAPIView):
+    """Create a new user in the system"""
+    serializer_class = UserSerializer
+
+
+class CreateTokenView(ObtainAuthToken):
+    """Create a new auth token for the user"""
+    serializer_class = AuthTokenSerializer
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+
+class ManageUserView(generics.RetrieveUpdateAPIView):
+    # Manage authenticated user
+    serializer_class = UserSerializer
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        # Retrieve and return authenticated user
+        return self.request.user
+
+class ChangePasswordView(generics.UpdateAPIView):
+        """
+        An endpoint for changing password.
+        """
+        serializer_class = ChangePasswordSerializer
+        model = User
+        permission_classes = (permissions.IsAuthenticated,)
+
+        def get_object(self, queryset=None):
+            obj = self.request.user
+            return obj
+
+        def update(self, request, *args, **kwargs):
+            self.object = self.get_object()
+            serializer = self.get_serializer(data=request.data)
+
+            if serializer.is_valid():
+                # Check old password
+                if not self.object.check_password(serializer.data.get("old_password")):
+                    return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                # set_password also hashes the password that the user will get
+                self.object.set_password(serializer.data.get("new_password"))
+                self.object.save()
+                response = {
+                    'status': 'success',
+                    'code': status.HTTP_200_OK,
+                    'message': 'Password updated successfully',
+                    'data': []
+                }
+
+                return Response(response)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserViewSet(viewsets.ModelViewSet):
+    # Manage ingredientss in the database
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = User.objects.all()
+        # PERFORM FILTER BY SEARCH INPUT
+        conditions = Q()
+        keywords = self.request.query_params.get('input', None)
+        # print(keywords)
+        if keywords:
+            
+            keywords_list = keywords.split(' ') 
+            # print(keywords_list)
+            for word in keywords_list:
+                conditions |= Q(name__icontains=word) | Q(email__icontains=word)
+    
+            if conditions:
+                # print(type(conditions))
+                queryset = User.objects.filter(conditions)
+
+        return queryset
+
+class UserImageUpdateView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserPictureSerializer
+    # permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+
+ 
+    
+    def get_object(self):
+        kwarg_id = self.kwargs.get("id")
+        obj = User.objects.get(id=kwarg_id)
+        return obj
