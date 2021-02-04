@@ -1,4 +1,5 @@
 from django.db import models
+import random
 
 import barcode
 from barcode.writer import ImageWriter
@@ -78,6 +79,9 @@ class Employee(models.Model):
     department = models.ForeignKey('Department', null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=200)
 
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
     def __unicode__(self):
         return self.name
 
@@ -89,6 +93,9 @@ class Department(models.Model):
     id = models.SmallIntegerField(primary_key=True,unique=True)
     name = models.CharField(max_length=30)
 
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
     def __unicode__(self):
         return self.name
 
@@ -99,6 +106,9 @@ class Department(models.Model):
 class AssetType(models.Model):
     unique_id = models.IntegerField(unique=True,null=True,blank=True)
     name = models.CharField(max_length=200)
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.name
@@ -115,7 +125,7 @@ class Asset(models.Model):
         ('04', 'BROKEN'),
     )
 
-
+    code = models.CharField(max_length=10,blank=True,null=True)
     type = models.ForeignKey('AssetType', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     department = models.ForeignKey('Department', null=True, on_delete=models.SET_NULL)
@@ -124,6 +134,9 @@ class Asset(models.Model):
     barcode = models.ImageField(null=True, blank=True, upload_to=profile_image_file_path)
     image = models.ImageField(null=True, blank=True, upload_to=image_file_path)
 
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
     def __unicode__(self):
         return self.name
 
@@ -131,8 +144,12 @@ class Asset(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        EAN = barcode.get_barcode_class('code39')
-        ean = EAN(f'{self.department.id}{self.condition}{self.id}', writer=ImageWriter())
+        code = self.code
+        z_code = code.zfill(6)
+        rand_num = str(random.randint(0,200)).zfill(4)
+
+        EAN = barcode.get_barcode_class('ean13')
+        ean = EAN(f'{self.department.id}{z_code}{rand_num}', writer=ImageWriter())
         buffer = BytesIO()
         ean.write(buffer)
         self.barcode.save(f'{uuid.uuid4()}.png', File(buffer), save=False)
