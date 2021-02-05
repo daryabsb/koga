@@ -26,7 +26,7 @@ from core.models import (
     )
 from .serializers import (
     UserListSerializer, UserSerializer, AuthTokenSerializer, ChangePasswordSerializer,
-    UserPictureSerializer,
+    UserPictureSerializer,DepartmentSerializer,AssetTypeSerializer,AssetSerializer,
     # AttachmentSerializer,
     )
 # from .pagination import PatientPagination, AppointmentPagination
@@ -127,3 +127,15 @@ class UserImageUpdateView(generics.RetrieveUpdateAPIView):
         kwarg_id = self.kwargs.get("id")
         obj = User.objects.get(id=kwarg_id)
         return obj
+
+class DepartmentViewset(viewsets.ModelViewSet):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+
+class AssetTypeViewset(viewsets.ModelViewSet):
+    queryset = AssetType.objects.all()
+    serializer_class = AssetTypeSerializer
+
+class AssetViewset(viewsets.ModelViewSet):
+    queryset = Asset.objects.all()
+    serializer_class = AssetSerializer

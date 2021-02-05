@@ -3,13 +3,17 @@ from rest_framework import routers
 
 from .views import (
     CreateUserView, CreateTokenView, ManageUserView, UserViewSet, 
-    ChangePasswordView,UserImageUpdateView,
+    ChangePasswordView,UserImageUpdateView,DepartmentViewset,AssetTypeViewset,AssetViewset,
     # AttachmentViewSet, ImageUpdateView, 
     )
 
 
 router = routers.DefaultRouter()
 router.register('users', UserViewSet)
+router.register('departments', DepartmentViewset)
+router.register('categories', AssetTypeViewset)
+router.register('assets', AssetViewset)
+
 
 urlpatterns = [
     path('', include(router.urls)),

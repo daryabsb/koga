@@ -98,3 +98,25 @@ class UserListSerializer(serializers.ModelSerializer):
             instance.is_staff = validated_data.get('is_staff', instance.is_staff)
             instance.save()
             return instance
+
+
+class AssetTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AssetType
+        fields = ('id','unique_id','name',)
+        read_only_Fields = ('id',)
+
+class DepartmentSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Department
+        fields = ('id','name',)
+        read_only_Fields = ('id',)
+
+class AssetSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Asset
+        fields = ('id','code','type','name','department','description','condition','barcode','image','created',)
+        read_only_Fields = ('id',)

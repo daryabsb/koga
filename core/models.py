@@ -145,8 +145,9 @@ class Asset(models.Model):
 
     def save(self, *args, **kwargs):
         code = self.code
-        z_code = code.zfill(6)
-        rand_num = str(random.randint(0,200)).zfill(4)
+        z_code = code.zfill(5)
+        # rand_num = str(random.randint(0,200)).zfill(4)
+        rand_num = str(self.type.unique_id).zfill(5)
 
         EAN = barcode.get_barcode_class('ean13')
         ean = EAN(f'{self.department.id}{z_code}{rand_num}', writer=ImageWriter())
