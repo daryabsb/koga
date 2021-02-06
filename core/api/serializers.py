@@ -4,6 +4,23 @@ from core.models import (
     User, Employee, Department, AssetType, Asset,
     )
 
+class ChoiceField(serializers.ChoiceField):
+    
+    def to_representation(self, obj):
+        if obj == '' and self.allow_blank:
+            return obj
+        return self._choices[obj]
+
+    def to_internal_value(self, data):
+        # To support inserts with the value
+        if data == '' and self.allow_blank:
+            return ''
+
+        for key, val in self._choices.items():
+            if val == data:
+                return key
+        self.fail('invalid_choice', input=data)
+
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for the users object"""
 
@@ -116,7 +133,12 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 class AssetSerializer(serializers.ModelSerializer):
     
+    condition = ChoiceField(Asset.CONDITION_CHOICES)
     class Meta:
         model = Asset
         fields = ('id','code','type','name','department','description','condition','barcode','image','created',)
         read_only_Fields = ('id',)
+
+    def get_condition(self, obj):
+
+        return str(obj.condition)

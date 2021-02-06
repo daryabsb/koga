@@ -1,42 +1,38 @@
 <template>
 	<div>
      <!-- Page content -->
-    <b-container class="mt--8 pb-5">
+    <b-container class="mt-3 pb-5">
       <b-row class="justify-content-center">
         <b-col lg="5" md="7">
-          <b-card no-body class="bg-secondary border-0 mb-0">
-            <b-card-header class="bg-transparent pb-5"  >
-              <div class="text-muted text-center mt-2 mb-3">Sign in with</div>
-           
-            </b-card-header>
+          <b-card no-body bg-variant="light" header="Login" class="text-center border-0 mb-0">
             <b-card-body class="px-lg-5 py-lg-5">
-              <validation-observer v-slot="{handleSubmit}" ref="formValidator">
-                <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
-                  <base-input alternative
+              
+                <!-- <b-form role="form" @submit.prevent="handleSubmit(onSubmit)"> -->
+                  <b-form-input 
                               class="mb-3"
-                              name="Email"
-                              :rules="{required: true, email: true}"
+                             
+                             
                               prepend-icon="ni ni-email-83"
                               placeholder="Email"
-                              v-model="model.email">
-                  </base-input>
+                              v-model="email">
+                  </b-form-input>
 
-                  <base-input alternative
+                  <b-form-input 
                               class="mb-3"
-                              name="Password"
-                              :rules="{required: true, min: 6}"
-                              prepend-icon="ni ni-lock-circle-open"
                               type="password"
+                             
+                             
+                             
                               placeholder="Password"
-                              v-model="model.password">
-                  </base-input>
-
-                  <b-form-checkbox v-model="model.rememberMe">Remember me</b-form-checkbox>
+                              v-model="password">
+                  </b-form-input>
+                  <b-form-checkbox style="padding-right:10px;" v-model="rememberMe"> Remember Me</b-form-checkbox>
+               
                   <div class="text-center">
-                    <base-button type="primary" native-type="submit" class="my-4">Sign in</base-button>
+                    <b-button @click="onLogin" variant="primary" class="my-4">Sign in</b-button>
                   </div>
-                </b-form>
-              </validation-observer>
+                <!-- </b-form> -->
+            
             </b-card-body>
           </b-card>
           <b-row class="mt-3">
@@ -44,7 +40,7 @@
               <router-link to="/dashboard" class="text-light"><small>Forgot password?</small></router-link>
             </b-col>
             <b-col cols="6" class="text-right">
-              <router-link to="/register" class="text-light"><small>Create new account</small></router-link>
+              <nuxt-link to="/register" class="text-light"><small>Create new account</small></nuxt-link>
             </b-col>
           </b-row>
         </b-col>
@@ -54,19 +50,36 @@
 </template>
 <script>
   export default {
+    auth: 'guest',
     data() {
       return {
-        model: {
-          email: '',
-          password: '',
-          rememberMe: false
-        }
+        email: '',
+        password: '',
+        rememberMe: false
       };
     },
     methods: {
       onSubmit() {
         // this will be called only after form is valid. You can do api call here to login
+      },
+      async onLogin() {
+      try {
+        //   console.log(this.email, ' / ', this.password)
+        let loginfo = this.$auth.loginWith('local', {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+          
+        });
+        // console.log(Loginfo)
+        // this.$router.push({ path: '/' })
+       
+      } catch (err) {
+        console.log(err)
       }
+       this.$router.push({ path: '/' })
+    }
     }
   };
 </script>

@@ -20,8 +20,13 @@
 </b-card-group>
   </b-col>
   <b-col cols="9">
+    <!-- {{assets}} -->
     <b-card>
-      <b-table hover :items="items"></b-table>
+      <b-table hover :items="assets">
+        <template #cell(barcode)="row">
+									<img :src="row.item.barcode" />
+							</template>
+      </b-table>
     </b-card>
   </b-col>
 </b-row>
@@ -30,23 +35,24 @@
 
 <script>
 export default {
-  async asyncData({axios}) {
+  async asyncData({$axios}) {
 
     let departmentsUrl = '/departments/';
     let categoriesUrl = '/categories/';
     let assetsUrl = '/assets/';
     try {
 
-      const departmentsRes = await axios.get(departmentsUrl);
-      const categoriesRes = await axios.get(categoriesUrl);
-      const assetsRes = await axios.get(assetsUrl);
+      const departmentsRes = await $axios.$get(departmentsUrl);
+      const categoriesRes = await $axios.$get(categoriesUrl);
+      const assetsRes = await $axios.$get(assetsUrl);
 
-      const [departmentsData,categoriesData,assetsData] = await Promise.all(departmentsRes,categoriesRes,assetsRes)
-   
+      // const [departmentsData,categoriesData,assetsData] = await Promise.all(departmentsRes,categoriesRes,assetsRes)
+    // console.log(assetsRes)
+
     return {
-      departments: departmentsData,
-      categories: categoriesData,
-      assets: assetsData
+      departments: departmentsRes,
+      categories: categoriesRes,
+      assets: assetsRes
     }
    
    } catch (error) {
@@ -58,7 +64,7 @@ export default {
 
   data() {
       return {
-        items: [
+        itemsin: [
           { 
             age: 40, 
             first_name: 'Dickerson', 
@@ -87,7 +93,20 @@ export default {
           { age: 29, first_name: 'Dick', last_name: 'Dunlap' }
         ]
       }
-  }
+  },
+  mounted() {
+    
+      this.assets.forEach(item => {
+        let itemDept = this.departments.find(dept=>dept.id===item.department)
+        let itemType = this.categories.find(cat=>cat.id===item.type)
+        item.department = itemDept.name
+        item.type = itemType.name
+
+
+      })
+    
+  } 
+
 }
 </script>
 
