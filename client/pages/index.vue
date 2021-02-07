@@ -22,9 +22,12 @@
   <b-col cols="9">
     <!-- {{assets}} -->
     <b-card>
-      <b-table hover :items="assets">
+      <b-table hover :items="assets" :fields="fields">
         <template #cell(barcode)="row">
-									<img :src="row.item.barcode" />
+            <div >
+              	<img style="height:80px;" :src="row.item.barcode" />
+            </div>
+								
 							</template>
       </b-table>
     </b-card>
@@ -64,6 +67,7 @@ export default {
 
   data() {
       return {
+        fields: ['id','type','name','condition','barcode'],
         itemsin: [
           { 
             age: 40, 
