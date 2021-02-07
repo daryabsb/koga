@@ -11,6 +11,7 @@ from rest_framework import generics, authentication, permissions
 
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from django_filters.rest_framework import DjangoFilterBackend
 
 from django.http import Http404
 from rest_framework.views import APIView
@@ -136,6 +137,33 @@ class AssetTypeViewset(viewsets.ModelViewSet):
     queryset = AssetType.objects.all()
     serializer_class = AssetTypeSerializer
 
+from rest_framework import filters
+from django.db.models import Q
+
 class AssetViewset(viewsets.ModelViewSet):
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
+    filter_backends = (filters.SearchFilter,filters.OrderingFilter)
+    search_fields  = ['$name', '$department']
+    ordering_fields = ['name', 'department']
+    # filterset_fields = '__all__'
+
+    def get_queryset(self):
+
+        queryset = Asset.objects.all()
+
+        conditions = Q()
+        keywords = self.request.query_params.get('name', None)
+        # print(keywords)
+        if keywords:
+            
+            keywords_list = keywords.split(' ') 
+            # print(keywords_list)
+            for word in keywords_list:
+                conditions |= Q(name__icontains=word) | Q(department__name__icontains=word)
+    
+            if conditions:
+                # print(type(conditions))
+                queryset = Asset.objects.filter(conditions)
+
+        return queryset

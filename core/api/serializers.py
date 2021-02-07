@@ -134,11 +134,15 @@ class DepartmentSerializer(serializers.ModelSerializer):
 class AssetSerializer(serializers.ModelSerializer):
     
     condition = ChoiceField(Asset.CONDITION_CHOICES)
+    department_name = serializers.SerializerMethodField()
     class Meta:
         model = Asset
-        fields = ('id','code','type','name','department','description','condition','barcode','image','created',)
+        fields = ('id','code','type','name','department','department_name','description','condition','barcode','image','created',)
         read_only_Fields = ('id',)
 
     def get_condition(self, obj):
 
         return str(obj.condition)
+
+    def get_department_name(self, obj):
+        return obj.department.name

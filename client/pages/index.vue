@@ -1,6 +1,13 @@
 <template>
   <b-container fluid>
-
+<!-- <b-row>
+  <b-col>
+    <b-card no-border class="container border-0 text-center">
+ <search-bar></search-bar>
+    </b-card>
+   
+  </b-col>
+</b-row> -->
 
 <b-row class="mt-3">
   <b-col cols="3">
