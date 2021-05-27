@@ -11,6 +11,33 @@
 
 <b-row class="mt-3">
   <b-col cols="3">
+     <b-card class="mb-3" header="Filter By:">
+       <b-form-select v-model="selectedDept" :options="deptOptions" class="mb-3">
+      <!-- This slot appears above the options from 'options' prop -->
+      <template #first>
+        <b-form-select-option :value="null">-- Filter By Department --</b-form-select-option>
+      </template>
+      <b-form-select-option value="0">Clear Filter</b-form-select-option>
+    </b-form-select>
+     <b-form-select v-model="selectedDept" :options="deptOptions" class="mb-3">
+      <!-- This slot appears above the options from 'options' prop -->
+      <template #first>
+        <b-form-select-option :value="null">-- Filter By Type --</b-form-select-option>
+      </template>
+      <b-form-select-option value="0">Clear Filter</b-form-select-option>
+    </b-form-select>
+     <b-form-select v-model="selectedDept" :options="deptOptions" class="mb-3">
+      <!-- This slot appears above the options from 'options' prop -->
+      <template #first>
+        <b-form-select-option :value="null">-- Filter By Condition --</b-form-select-option>
+      </template>
+      <b-form-select-option value="0">Clear Filter</b-form-select-option>
+    </b-form-select>
+   
+    <b-form-checkbox><span class="ml-3">Small</span></b-form-checkbox>
+  <b-form-checkbox><span class="ml-3">Medium</span></b-form-checkbox>
+  <b-form-checkbox><span class="ml-3">Large</span></b-form-checkbox>
+     </b-card>
    <b-card no-body header="Card with flush list group">
     <b-list-group flush>
       <b-list-group-item href="#">Cras justo odio</b-list-group-item>
@@ -24,12 +51,18 @@
       mollit voluptate est in duis laboris ad sit ipsum anim Lorem.
     </b-card-body>
   </b-card>
-</b-card-group>
   </b-col>
   <b-col cols="9">
     <!-- {{assets}} -->
     <b-card>
       <b-table hover :items="assets" :fields="fields">
+        <template #cell(name)="row">
+            <div >
+              <nuxt-link :to="`/${row.item.id}`">{{row.item.name}}</nuxt-link>
+              	
+            </div>
+								
+							</template>
         <template #cell(barcode)="row">
             <div >
               	<img style="height:80px;" :src="row.item.barcode" />
@@ -74,6 +107,18 @@ export default {
 
   data() {
       return {
+        selectedDept:null,
+        deptOptions: [
+          { value: 'A', text: 'Option A (from options prop)' },
+          { value: 'B', text: 'Option B (from options prop)' }
+        ],
+        selected: [],
+        filterOptions: [
+          { item: 'A', name: 'Option A' },
+          { item: 'B', name: 'Option B' },
+          { item: 'D', name: 'Option C', notEnabled: true },
+          { item: { d: 1 }, name: 'Option D' }
+        ],
         fields: ['id','type','name','condition','barcode'],
         itemsin: [
           { 

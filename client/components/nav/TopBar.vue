@@ -32,7 +32,7 @@
             <em>User</em>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item @click="onLogout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav> 
       </b-collapse>
@@ -60,7 +60,15 @@
  
 </div>
 </template>
-
+<script>
+export default {
+  methods: {
+    onLogout() {
+      this.$auth.logout();
+    },
+}
+}
+</script>
 
 <style>
 .logo-main {

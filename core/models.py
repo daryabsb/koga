@@ -12,6 +12,8 @@ import os
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
+from .brother import print_text, get_label_context
+
 # Create your models here.
 
 
@@ -154,4 +156,6 @@ class Asset(models.Model):
         buffer = BytesIO()
         ean.write(buffer)
         self.barcode.save(f'{uuid.uuid4()}.png', File(buffer), save=False)
+        print('DONE')
+        print_text(self.barcode)
         return super().save(*args,**kwargs)

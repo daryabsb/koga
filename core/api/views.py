@@ -140,6 +140,30 @@ class AssetTypeViewset(viewsets.ModelViewSet):
 from rest_framework import filters
 from django.db.models import Q
 
+
+
+def filter_conditions(queryset, params=None):
+    conditions = Q()
+    keywords = params.get('name', None)
+    # print(keywords)
+    if keywords:
+        
+        keywords_list = keywords.split(' ') 
+        # print(keywords_list)
+        for word in keywords_list:
+            conditions |= Q(name__icontains=word) | Q(department__name__icontains=word)
+
+        if conditions:
+            # print(type(conditions))
+            queryset = Asset.objects.filter(conditions)
+
+        return queryset
+    return queryset
+
+
+
+
+
 class AssetViewset(viewsets.ModelViewSet):
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
@@ -152,18 +176,20 @@ class AssetViewset(viewsets.ModelViewSet):
 
         queryset = Asset.objects.all()
 
-        conditions = Q()
-        keywords = self.request.query_params.get('name', None)
-        # print(keywords)
-        if keywords:
+        return filter_conditions(queryset,self.request.query_params)
+        
+        # conditions = Q()
+        # keywords = self.request.query_params.get('name', None)
+        # # print(keywords)
+        # if keywords:
             
-            keywords_list = keywords.split(' ') 
-            # print(keywords_list)
-            for word in keywords_list:
-                conditions |= Q(name__icontains=word) | Q(department__name__icontains=word)
+        #     keywords_list = keywords.split(' ') 
+        #     # print(keywords_list)
+        #     for word in keywords_list:
+        #         conditions |= Q(name__icontains=word) | Q(department__name__icontains=word)
     
-            if conditions:
-                # print(type(conditions))
-                queryset = Asset.objects.filter(conditions)
+        #     if conditions:
+        #         # print(type(conditions))
+        #         queryset = Asset.objects.filter(conditions)
 
-        return queryset
+        # return queryset
