@@ -4,15 +4,18 @@ from rest_framework import routers
 from .views import (
     CreateUserView, CreateTokenView, ManageUserView, UserViewSet, 
     ChangePasswordView,UserImageUpdateView,DepartmentViewset,AssetTypeViewset,AssetViewset,
+    OfficetViewset,AssetHistoryViewset
     # AttachmentViewSet, ImageUpdateView, 
     )
 
 
 router = routers.DefaultRouter()
 router.register('users', UserViewSet)
+router.register('offices', OfficetViewset)
 router.register('departments', DepartmentViewset)
 router.register('categories', AssetTypeViewset)
 router.register('assets', AssetViewset)
+router.register('history', AssetHistoryViewset)
 
 
 urlpatterns = [

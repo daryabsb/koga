@@ -6,7 +6,7 @@
                 <div class="container">
                     <nav class="navbar navbar-expand-md navbar-light">
                         <nuxt-link class="navbar-brand" to="/">
-                            <img src="../assets/img/logo.png" alt="logo">
+                            <img src="../assets/koga/logo.png" alt="logo">
                         </nuxt-link>
 
                         <b-navbar-toggle target="navbarSupportedContent"></b-navbar-toggle>

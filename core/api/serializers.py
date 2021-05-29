@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework import serializers
 from core.models import (
-    User, Employee, Department, AssetType, Asset,
+    User, Employee, Office, Department, AssetType, Asset, AssetHistory
     )
 
 class ChoiceField(serializers.ChoiceField):
@@ -125,19 +125,44 @@ class AssetTypeSerializer(serializers.ModelSerializer):
         read_only_Fields = ('id',)
 
 class DepartmentSerializer(serializers.ModelSerializer):
-    
+
+    office_name = serializers.SerializerMethodField()
     class Meta:
         model = Department
+        fields = ('id','name','office_name')
+        read_only_Fields = ('id',)
+
+    def get_office_name(self, obj):
+        if obj.office:
+            return obj.office.name
+        else:
+            return ''
+
+class OfficeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Office
         fields = ('id','name',)
+        read_only_Fields = ('id',)
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Employee
+        fields = ('id','name','department','office')
         read_only_Fields = ('id',)
 
 class AssetSerializer(serializers.ModelSerializer):
     
     condition = ChoiceField(Asset.CONDITION_CHOICES)
     department_name = serializers.SerializerMethodField()
+    office_name = serializers.SerializerMethodField()
+    employee_name = serializers.SerializerMethodField()
     class Meta:
         model = Asset
-        fields = ('id','code','type','name','department','department_name','description','condition','barcode','image','created',)
+        fields = ('id','code','type','name','department',
+        'department_name','office_name','employee_name','description',
+        'condition','barcode','image','created',)
         read_only_Fields = ('id',)
 
     def get_condition(self, obj):
@@ -145,4 +170,28 @@ class AssetSerializer(serializers.ModelSerializer):
         return str(obj.condition)
 
     def get_department_name(self, obj):
-        return obj.department.name
+        if obj.department:
+            return obj.department.name
+        else:
+            return ''
+
+    def get_office_name(self, obj):
+        if obj.office:
+            return obj.office.name
+        else:
+            return ''
+
+    def get_employee_name(self, obj):
+        if obj.employee:
+            return obj.employee.name
+        else:
+            return ''
+    
+class AssetHistorySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = AssetHistory
+        fields = ('id','description','created')
+        read_only_Fields = ('id','created')
+    
+    

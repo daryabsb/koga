@@ -9,18 +9,19 @@
             </div>
         </div>
     <!-- <Banner></Banner> -->
-    <b-modal>Nothing</b-modal>
+   
     <Offer></Offer>
-    <!-- <LatestProducts></LatestProducts> -->
-    <ProductCategory></ProductCategory>
-    <TrendingProducts></TrendingProducts>
-    <BestSellers></BestSellers>
     <Facility></Facility>
-    <Testimonials></Testimonials>
-    <News></News>
-    <Subscribe></Subscribe>
-    <Partner></Partner>
-    <InstagramPhotos></InstagramPhotos>
+    <!-- <LatestProducts></LatestProducts> -->
+    <!-- <ProductCategory></ProductCategory> -->
+    <!-- <TrendingProducts></TrendingProducts> -->
+    <!-- <BestSellers></BestSellers> -->
+   
+    <!-- <Testimonials></Testimonials> -->
+    <!-- <News></News> -->
+    <!-- <Subscribe></Subscribe> -->
+    <!-- <Partner></Partner> -->
+    <!-- <InstagramPhotos></InstagramPhotos> -->
   </div>
 </template>
 <script>

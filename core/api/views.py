@@ -23,11 +23,12 @@ from rest_framework import authentication, permissions, parsers, viewsets, mixin
 # from rest_framework.permissions import IsAuthenticated
 
 from core.models import (
-    User, Employee, Department, AssetType, Asset,
+    User, Employee, Department, AssetType, Asset, Office, AssetHistory
     )
 from .serializers import (
     UserListSerializer, UserSerializer, AuthTokenSerializer, ChangePasswordSerializer,
     UserPictureSerializer,DepartmentSerializer,AssetTypeSerializer,AssetSerializer,
+    OfficeSerializer,AssetHistorySerializer,
     # AttachmentSerializer,
     )
 # from .pagination import PatientPagination, AppointmentPagination
@@ -133,6 +134,10 @@ class DepartmentViewset(viewsets.ModelViewSet):
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
 
+class OfficetViewset(viewsets.ModelViewSet):
+    queryset = Office.objects.all()
+    serializer_class = OfficeSerializer
+
 class AssetTypeViewset(viewsets.ModelViewSet):
     queryset = AssetType.objects.all()
     serializer_class = AssetTypeSerializer
@@ -144,14 +149,14 @@ from django.db.models import Q
 
 def filter_conditions(queryset, params=None):
     conditions = Q()
-    keywords = params.get('name', None)
+    keywords = params.get('input', None)
     # print(keywords)
     if keywords:
         
         keywords_list = keywords.split(' ') 
         # print(keywords_list)
         for word in keywords_list:
-            conditions |= Q(name__icontains=word) | Q(department__name__icontains=word)
+            conditions |= Q(name__icontains=word) | Q(department__name__icontains=word) | Q(office__name__icontains=word) | Q(employee__name__icontains=word)
 
         if conditions:
             # print(type(conditions))
@@ -161,21 +166,18 @@ def filter_conditions(queryset, params=None):
     return queryset
 
 
-
-
-
 class AssetViewset(viewsets.ModelViewSet):
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
     filter_backends = (filters.SearchFilter,filters.OrderingFilter)
-    search_fields  = ['$name', '$department']
-    ordering_fields = ['name', 'department']
+    search_fields  = ['$name', '$department', '$office','$employee']
+    ordering_fields = ['name', 'department','employee','created']
     # filterset_fields = '__all__'
 
     def get_queryset(self):
 
         queryset = Asset.objects.all()
-
+        # print(self.request.query_params)
         return filter_conditions(queryset,self.request.query_params)
         
         # conditions = Q()
@@ -193,3 +195,7 @@ class AssetViewset(viewsets.ModelViewSet):
         #         queryset = Asset.objects.filter(conditions)
 
         # return queryset
+
+class AssetHistoryViewset(viewsets.ModelViewSet):
+    queryset = AssetHistory.objects.all()
+    serializer_class = AssetHistorySerializer

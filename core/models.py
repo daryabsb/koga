@@ -12,7 +12,7 @@ import os
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
-from .brother import print_text, get_label_context
+# from .brother import print_text, get_label_context
 
 # Create your models here.
 
@@ -76,24 +76,29 @@ class User(PermissionsMixin, AbstractBaseUser):
     def __str__(self):
         return self.name
 
-class Employee(models.Model):
-    employee_id = models.SmallIntegerField(null=True,blank=True,unique=True)
-    department = models.ForeignKey('Department', null=True, on_delete=models.SET_NULL)
-    name = models.CharField(max_length=200)
 
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    def __unicode__(self):
-        return self.name
+class Office(models.Model):
+    name = models.CharField(max_length=100, default='Main Office')
 
     def __str__(self):
         return self.name
 
-
 class Department(models.Model):
     id = models.SmallIntegerField(primary_key=True,unique=True)
     name = models.CharField(max_length=30)
+    office = models.ForeignKey('Office', null=True, on_delete=models.SET_NULL)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name} ({self.office.name})'
+        # return self.name
+
+class Employee(models.Model):
+    employee_id = models.SmallIntegerField(null=True,blank=True,unique=True)
+    department = models.ForeignKey('Department', null=True, on_delete=models.SET_NULL)
+    office = models.ForeignKey('Office', null=True, on_delete=models.SET_NULL)
+    name = models.CharField(max_length=200)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -131,6 +136,8 @@ class Asset(models.Model):
     type = models.ForeignKey('AssetType', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     department = models.ForeignKey('Department', null=True, on_delete=models.SET_NULL)
+    office = models.ForeignKey('Office', null=True, on_delete=models.SET_NULL)
+    employee = models.ForeignKey('Employee', null=True, on_delete=models.SET_NULL)
     description = models.TextField(null=True,blank=True)
     condition = models.CharField(max_length=2,default='01',choices=CONDITION_CHOICES)
     barcode = models.ImageField(null=True, blank=True, upload_to=profile_image_file_path)
@@ -157,5 +164,13 @@ class Asset(models.Model):
         ean.write(buffer)
         self.barcode.save(f'{uuid.uuid4()}.png', File(buffer), save=False)
         print('DONE')
-        print_text(self.barcode)
+        # print_text(self.barcode)
         return super().save(*args,**kwargs)
+
+class AssetHistory(models.Model):
+    asset = models.ForeignKey('Asset', on_delete=models.CASCADE)
+    description = models.CharField(max_length=50)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.asset.code} - {self.asset.name} - {self.created}'

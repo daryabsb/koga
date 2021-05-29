@@ -5,7 +5,8 @@ from django.utils.translation import gettext as _
 
 
 from .models import (
-    User, Employee, Department, AssetType, Asset,
+    User, Employee, Department, Office, AssetType, 
+    Asset, AssetHistory,
     )
 
 
@@ -31,5 +32,7 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(Employee)
 admin.site.register(Department)
+admin.site.register(Office)
 admin.site.register(AssetType)
 admin.site.register(Asset)
+admin.site.register(AssetHistory)
