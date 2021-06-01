@@ -83,29 +83,23 @@ TEMPLATES = [
     },
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost',
-    'http://192.168.1.2'
-)
-
 CORS_ORIGIN_ALLOW_ALL = True
 
  # add this block below MIDDLEWARE
-#CORS_ORIGIN_WHITELIST = (
- #   'http://localhost:3000',  
-#)
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8080',  
+)
 
 CORS_ORIGIN_REGEX_WHITELIST = [
-    r"^https://\w+\.localhost$",
-    r"http://\w+\.localhost$",
+    r"^https://\w+\.localhost:8080$",
 ]
 CORS_ALLOW_METHODS = [
-   'DELETE',
-   'GET',
-   'OPTIONS',
-   'PATCH',
-   'POST',
-   'PUT',
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
 WSGI_APPLICATION = 'app.wsgi.application'

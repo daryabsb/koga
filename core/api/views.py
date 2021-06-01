@@ -169,6 +169,7 @@ def filter_conditions(queryset, params=None):
 class AssetViewset(viewsets.ModelViewSet):
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
+    permission_classes = (permissions.IsAuthenticated,)
     filter_backends = (filters.SearchFilter,filters.OrderingFilter)
     search_fields  = ['$name', '$department', '$office','$employee']
     ordering_fields = ['name', 'department','employee','created']
