@@ -46,7 +46,7 @@
 
                                 <li class="nav-item p-relative"><a href="#" class="nav-link">Assets <i class="fas fa-chevron-down"></i></a>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item"><nuxt-link to="/products" class="nav-link">Electronics</nuxt-link></li>
+                                        <li class="nav-item"><nuxt-link to="/assets/electronics" class="nav-link">Electronics</nuxt-link></li>
 
                                         <li class="nav-item"><nuxt-link to="/assets/1" class="nav-link">Furniture</nuxt-link></li>
                                         <li class="nav-item"><nuxt-link to="/assets/1" class="nav-link">Supplies</nuxt-link></li>

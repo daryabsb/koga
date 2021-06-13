@@ -6,6 +6,9 @@ const state = () => ( {
     orders: [],
     assets: [],
     categories: [],
+    offices: [],
+    selProduct: [],
+
 });
 
 export const totals = (paylodArr) => {
@@ -23,11 +26,17 @@ export const totals = (paylodArr) => {
     }
 };
 const mutations = {
-    'GET_ALL_ASSETS_DATA'(state, payload) {
+    'GET_ALL_ASSETS'(state, payload) {
         state.assets = payload;
     },
-    'GET_CATEGORIES_DATA' (state, payload) {
+    'GET_CATEGORIES' (state, payload) {
         state.categories = payload;
+    },
+    'GET_OFFICES' (state, payload) {
+        state.offices = payload;
+    },
+    'SELECT_PRODUCT'(state,payload) {
+        state.selProduct = payload;
     },
     'GET_ORDER'(state, payload){
         state.orders = payload
@@ -102,7 +111,30 @@ const actions = {
     }, 
     cartEmpty({commit}){
         commit('CART_EMPTY')
-    }
+    },
+    async onFilter({ state, commit }, payload) {
+
+        let url = payload.url;
+        let query = '';
+
+       
+
+            query = `?input=${payload.searchInput}`;
+
+
+        let filterUrl = `${url}${query}`
+
+        console.log(filterUrl)
+
+        try {
+            // console.log(Array.from(payload));
+            const filterData = await this.$axios.get(filterUrl);
+            commit(`GET_ALL_${payload.module}`, filterData.data);
+        } catch (err) {
+            console.log(err);
+        }
+
+    },
 };
 
 const getters = {
@@ -129,6 +161,12 @@ const getters = {
     },
     getCategories(state) {
         return state.categories;
+    },
+    getOffices(state) {
+        return state.offices;
+    },
+    selProduct(state) {
+        return state.selProduct;
     },
 };
 

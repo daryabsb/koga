@@ -6,7 +6,7 @@
     <!-- <ProductCategory></ProductCategory> -->
     <!-- <TrendingProducts></TrendingProducts> -->
     <!-- <BestSellers></BestSellers> -->
-    <!-- <Facility></Facility> -->
+    <Facility></Facility>
     <!-- <Testimonials></Testimonials> -->
     <!-- <News></News> -->
     <!-- <Subscribe></Subscribe> -->
@@ -22,7 +22,7 @@
 // import ProductCategory from '../components/landing-one/ProductCategory';
 // import TrendingProducts from '../components/landing-one/TrendingProducts';
 // import BestSellers from '../components/landing-one/BestSellers';
-// import Facility from '../components/landing-one/Facility';
+import Facility from '../components/landing-one/Facility';
 // import Testimonials from '../components/landing-one/Testimonials';
 // import News from '../components/landing-one/News';
 // import Subscribe from '../components/common/Subscribe';
@@ -30,9 +30,10 @@
 // import InstagramPhotos from '../components/common/InstagramPhotos';
 
 export default {
-  // components: {
+  components: {
+    Facility
   //   Banner, Offer, LatestProducts, ProductCategory, TrendingProducts,
     // BestSellers, Facility, Testimonials, News, Subscribe, Partner, InstagramPhotos
-  // }
+  }
 }
 </script>

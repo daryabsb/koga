@@ -8,7 +8,7 @@
 
                 <div class="col d-flex">
                     <span @click="grid=false"><i class="fas fa-list"></i></span>
-                    <span @click="grid=false" class="mx-2"><i class="fas fa-th-large"></i></span>
+                    <span @click="grid=true" class="mx-2"><i class="fas fa-th-large"></i></span>
                       <span>|</span>
                     <span class="ml-3">Show:</span>
 
@@ -43,7 +43,7 @@
         </div>
         <div id="products-filter" class="products-collections-listing row" v-if="grid">
             <asset-item-grid
-                v-for="(product, index) in products"
+                v-for="(product, index) in getAssets"
                 :product="product"
                 :key="index"
                 @clicked="toggle"
@@ -103,7 +103,7 @@ export default {
         products(){
             return this.$store.state.products.all
         },
-         ...mapGetters(['getAssets','getCategories'])
+         ...mapGetters(['getAssets','getCategories', 'selProduct'])
     },
 }
 </script>

@@ -10,7 +10,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <!-- <th scope="col">Product</th> -->
+                                            <th scope="col">Product</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Category</th>
                                             <th scope="col">Office</th>
@@ -21,11 +21,11 @@
                                     <tbody>
 
                                         <tr v-for="(product, i) in products" :key="i">
-                                            <!-- <td class="product-thumbnail">
+                                            <td class="product-thumbnail">
                                                 <nuxt-link :to="`/assets/${product.id}`">
                                                     <img :src="product.image" :alt="product.name" />
                                                 </nuxt-link>
-                                            </td> -->
+                                            </td>
 
                                             <td class="product-name">
                                                 <nuxt-link :to="`/assets/${product.id}`">

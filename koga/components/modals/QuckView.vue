@@ -16,16 +16,20 @@
                         <div class="row align-items-center">
                             <div class="col-lg-6 col-md-6">
                                 <div class="productQuickView-image">
-                                    <img src="../../assets/img/quick-view-img.jpg" alt="image">
+                                    <img :src="selProduct.image" alt="image">
                                 </div>
                             </div>
 
                             <div class="col-lg-6 col-md-6">
                                 <div class="product-content">
-                                    <h3><a href="#">Neck empire sleeve t-shirts</a></h3>
+                                    <h3>
+                                        <nuxt-link :to="`/assets/${selProduct.id}`">
+                                            <span @click="closeQuickView">{{selProduct.name}}</span>
+                                        </nuxt-link>
+                                    </h3>
 
                                     <div class="price">
-                                        <span class="new-price">$191.00</span>
+                                        <!-- <span class="new-price">$191.00</span> -->
                                     </div>
 
                                     <div class="product-review">
@@ -57,35 +61,16 @@
                                         </ul>
                                     </div>
 
-                                    <div class="product-size-wrapper">
-                                        <h4>Size:</h4>
 
-                                        <ul>
-                                            <li><a href="#">XS</a></li>
-                                            <li class="active"><a href="#">S</a></li>
-                                            <li><a href="#">M</a></li>
-                                            <li><a href="#">XL</a></li>
-                                            <li><a href="#">XXL</a></li>
-                                        </ul>
+                                    <div class="card mt-3" style="width: 18rem;">
+                                        <img :src="selProduct.barcode" class="card-img-top" alt="...">
+                   
                                     </div>
+                                   
 
-                                    <div class="product-add-to-cart">
-                                        <div class="input-counter">
-                                            <span @click="decreaseQuantity()" class="minus-btn"><i class="fas fa-minus"></i></span>
-                                                {{quantity}}
-                                            <span @click="increaseQuantity()" class="plus-btn"><i class="fas fa-plus"></i></span>
-                                        </div>
-
-                                        <button 
-                                            type="submit" 
-                                            class="btn btn-primary"
-                                            @click="addToCart(item)"
-                                        >
-                                            <i class="fas fa-cart-plus"></i> Add to Cart
-                                        </button>
-                                    </div>
-
-                                    <a href="#" class="view-full-info">View full info</a>
+                                    <nuxt-link :to="`/assets/${selProduct.id}`" class="view-full-info">
+                                    <span @click="closeQuickView">View full info</span>
+                                    </nuxt-link>
                                 </div>
                             </div>
                         </div>
@@ -99,6 +84,7 @@
 
 <script>
 import { store, mutations } from '../../utils/sidebar-util';
+import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'QuckView',
     data() {
@@ -183,7 +169,8 @@ export default {
         },
         cart(){
             return this.$store.getters.cart
-        }
+        },
+          ...mapGetters(['selProduct'])
     }
 }
 </script>

@@ -21,7 +21,7 @@
             <ul class="product-info">
                 <li><span>Vendor:</span> <a href="#">Lereve</a></li>
                 <li><span>Availability:</span> <a href="#">In stock (7 items)</a></li>
-                <li><span>Product Type:</span> <a href="#">T-Shirt</a></li>
+                <li><span>Product Type:</span> <a href="#">{{type}}</a></li>
             </ul>
 
             <div class="product-color-switch">
@@ -54,19 +54,24 @@
                     {{quantity}}
                     <span @click="increaseQuantity()" class="plus-btn"><i class="fas fa-plus"></i></span>
                 </div>
+                <div class="card" style="width: 18rem;">
+                    <img :src="barcode" class="card-img-top" alt="...">
+                   
+                    </div>
+                </div>
 
                 <button v-if="getExistPId" type="submit" class="btn btn-danger" @click="addToCart()">
                     <i class="fas fa-cart-plus"></i> Already Added 
                 </button>
 
-                <button v-else type="submit" class="btn btn-primary" @click="addToCart()">
+                <!-- <button v-else type="submit" class="btn btn-primary" @click="addToCart()">
                     <i class="fas fa-cart-plus"></i> Add to Cart
-                </button>
+                </button> -->
             </div>
 
             <div class="wishlist-compare-btn">
-                <a href="#" class="btn btn-light"><i class="far fa-heart"></i> Add to Wishlist</a>
-                <a href="#" class="btn btn-light"><i class="fas fa-balance-scale"></i> Add to Compare</a>
+                <!-- <a href="#" class="btn btn-light"><i class="far fa-heart"></i> Add to Wishlist</a> -->
+                <!-- <a href="#" class="btn btn-light"><i class="fas fa-balance-scale"></i> Add to Compare</a> -->
             </div>
 
             <div class="buy-checkbox-btn">
@@ -78,13 +83,13 @@
                                 <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                             </svg>
                         </span>
-                        <span>I agree with the terms and conditions</span>
+                        <!-- <span>I agree with the terms and conditions</span> -->
                     </label>
                 </div>
 
-                <div class="item">
+                <!-- <div class="item">
                     <a href="#" class="btn btn-primary">Buy it now!</a>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -98,7 +103,7 @@ export default {
             quantity: 1
         }
     },
-    props: ['id', 'name', 'price', 'image' ],
+    props: ['id', 'name', 'price', 'image', 'type', 'barcode' ],
     computed: {
         cart(){
             return this.$store.getters.cart

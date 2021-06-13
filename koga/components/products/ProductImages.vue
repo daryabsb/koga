@@ -3,14 +3,15 @@
         <div class="col-lg-6 col-md-6">
             <div class="products-page-gallery">
                 <div class="product-page-gallery-main">
-                    <vueper-slides
+                    <img :src="images" alt="image">
+                    <!-- <vueper-slides
                         :bullets = "false"
                     >
                         <vueper-slide
                             v-for="(img, i) in images"
                             :key="i"
                             :image="img.image" />
-                    </vueper-slides>
+                    </vueper-slides> -->
                 </div>
             </div>
         </div>
@@ -19,12 +20,13 @@
 
 <script>
 export default {
+    props:['images'],
     data(){
         return{
-            images: [
+            images2: [
                 {
                     id: 1,
-                    image: require('../../assets/img/img1.jpg')
+                    image: [require('../../assets/img/img1.jpg')]
                 },
                 {
                     id: 2,

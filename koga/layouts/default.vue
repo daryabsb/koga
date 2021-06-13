@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopPanel v-if="isShowing" @clicked="onTopPanelClose"></TopPanel>
+    <!-- <TopPanel v-if="isShowing" @clicked="onTopPanelClose"></TopPanel> -->
     <TopHeader></TopHeader>
     <Menubar></Menubar>
     <nuxt />

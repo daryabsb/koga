@@ -16,7 +16,7 @@
                                 <h3>Assets</h3>
 
                                 <ul>
-                                    <li><nuxt-link to="/assets">Electronics</nuxt-link></li>
+                                    <li><nuxt-link to="/assets/electronics">Electronics</nuxt-link></li>
                                     <li><a href="#">Furnitures</a></li>
                                     <li><a href="#">Electrical</a></li>
                                     <li><a href="#">Supplies</a></li>

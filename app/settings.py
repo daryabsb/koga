@@ -88,10 +88,12 @@ CORS_ORIGIN_ALLOW_ALL = True
  # add this block below MIDDLEWARE
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',  
+    'http://172.16.10.49:8080',  
 )
 
 CORS_ORIGIN_REGEX_WHITELIST = [
     r"^https://\w+\.localhost:8080$",
+    r"^https://\w+\.172.16.10.49:8080$",
 ]
 CORS_ALLOW_METHODS = [
     'DELETE',

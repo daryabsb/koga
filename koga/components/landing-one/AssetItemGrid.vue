@@ -4,7 +4,7 @@
       <div class="product-image">
         <nuxt-link :to="`/assets/${product.id}`">
           <img :src="product.image" :alt="product.name" />
-          <img :src="product.imageHover" :alt="product.name" />
+          <!-- <img :src="product.imageHover" :alt="product.name" /> -->
         </nuxt-link>
 
         <ul>
@@ -12,19 +12,19 @@
             <a
               href="javascript:void(0)"
               title="Quick View"
-              v-b-tooltip.hover
+              
               @click.prevent="quickView"
             >
               <i class="far fa-eye"></i>
             </a>
           </li>
           <li>
-            <a href="#" title="Add to Wishlist" v-b-tooltip.hover>
+            <a href="#" title="Add to Wishlist" >
               <i class="far fa-heart"></i>
             </a>
           </li>
           <li>
-            <a href="#" title="Add to Compare" v-b-tooltip.hover>
+            <a href="#" title="Add to Compare" >
               <i class="fas fa-sync"></i>
             </a>
           </li>
@@ -96,6 +96,7 @@ export default {
   },
   methods: {
     quickView(e) {
+      this.$store.commit('SELECT_PRODUCT', this.product);
       this.$emit("clicked");
     },
     addToCart(item) {

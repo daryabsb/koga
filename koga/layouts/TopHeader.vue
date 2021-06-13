@@ -5,17 +5,17 @@
             <div class="row align-items-center">
                 <div class="col-lg-7 col-md-6">
                     <ul class="top-header-nav">
-                        <li><nuxt-link to="/login">Login</nuxt-link></li>
-                        <li><nuxt-link to="/signup">Signup</nuxt-link></li>
-                        <li><nuxt-link to="/products">Products</nuxt-link></li>
-                        <li><nuxt-link to="/contact">Contact</nuxt-link></li>
+                        <li><nuxt-link to="/login">Notes <span class="badge bg-danger">3</span></nuxt-link></li>
+                        <li><nuxt-link to="/signup">ERP</nuxt-link></li>
+                        <li><nuxt-link to="/products">Purchasing</nuxt-link></li>
+                        <li><nuxt-link to="/contact">Tasks <span class="badge bg-info">2</span></nuxt-link></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-5 col-md-6">
                     <ul class="top-header-right-nav">
                         <li><nuxt-link to="/blog-one">Blog</nuxt-link></li>
-                        <li><nuxt-link to="/cart">Cart</nuxt-link></li>
+                        <li><nuxt-link to="/cart">Emails<span class="badge bg-success">17</span></nuxt-link></li>
                         <li>
                             <div class="languages-list">
                                 <select>

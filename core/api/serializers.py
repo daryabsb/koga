@@ -154,7 +154,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
 class AssetSerializer(serializers.ModelSerializer):
     
-    condition = ChoiceField(Asset.CONDITION_CHOICES)
+    # condition = ChoiceField(Asset.CONDITION_CHOICES)
     department_name = serializers.SerializerMethodField()
     office_name = serializers.SerializerMethodField()
     employee_name = serializers.SerializerMethodField()

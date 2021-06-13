@@ -126,10 +126,10 @@ class AssetType(models.Model):
 class Asset(models.Model):
 
     CONDITION_CHOICES = (
-        ('01', 'NEW'),
-        ('02', 'USED'),
-        ('03', 'REFURBISHED'),
-        ('04', 'BROKEN'),
+        ('new', 'NEW'),
+        ('used', 'USED'),
+        ('refurbished', 'REFURBISHED'),
+        ('broken', 'BROKEN'),
     )
 
     code = models.CharField(max_length=10,blank=True,null=True)
@@ -139,7 +139,7 @@ class Asset(models.Model):
     office = models.ForeignKey('Office', null=True, on_delete=models.SET_NULL)
     employee = models.ForeignKey('Employee', null=True, on_delete=models.SET_NULL)
     description = models.TextField(null=True,blank=True)
-    condition = models.CharField(max_length=2,default='01',choices=CONDITION_CHOICES)
+    condition = models.CharField(max_length=12,default='new',choices=CONDITION_CHOICES)
     barcode = models.ImageField(null=True, blank=True, upload_to=profile_image_file_path)
     image = models.ImageField(null=True, blank=True, upload_to=image_file_path)
 
@@ -159,7 +159,7 @@ class Asset(models.Model):
         rand_num = str(self.type.unique_id).zfill(5)
 
         EAN = barcode.get_barcode_class('ean13')
-        ean = EAN(f'{self.department.id}{z_code}{rand_num}', writer=ImageWriter())
+        ean = EAN(f'{self.office.id}{z_code}{rand_num}', writer=ImageWriter())
         buffer = BytesIO()
         ean.write(buffer)
         self.barcode.save(f'{uuid.uuid4()}.png', File(buffer), save=False)
